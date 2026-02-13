@@ -1,0 +1,44 @@
+# Core Dependencies
+numpy>=2.1.0
+pandas>=2.3.0
+matplotlib>=3.10.8
+seaborn>=0.13.2
+scipy>=1.15.0,<1.16.0
+plotly>=6.5.2
+
+# Data Loading and APIs
+datasets>=3.2.0
+yfinance>=0.2.66
+requests>=2.32.0
+
+# NLP Libraries
+nltk>=3.9.2
+spacy>=3.7.5
+textblob>=0.18.0
+vaderSentiment>=3.3.2
+transformers>=4.48.0
+gensim>=4.3.3
+scikit-learn>=1.7.0,<1.8.0
+
+# Deep Learning (Pinned for CUDA 11.6 Compatibility)
+# NOTE: Install torch separately first if using GPU
+torch==2.5.1
+torchvision>=0.15.0
+tensorflow>=2.15.0
+keras<3.11.0
+
+# Jupyter & Development Tools
+ipywidgets>=8.1.5
+ipykernel>=7.2.0
+jupyterlab>=4.5.0
+notebook>=7.3.0
+
+# Time Series / Finance
+arch>=7.2.0
+ta>=0.11.0
+yahooquery>=2.3.7
+quantlib>=1.41
+
+# Utilities
+tqdm>=4.67.0
+joblib>=1.4.2
