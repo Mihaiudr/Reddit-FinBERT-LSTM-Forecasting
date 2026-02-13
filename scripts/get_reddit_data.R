@@ -3,7 +3,7 @@ library(RedditExtractoR)
 
 subreddits <- c("stocks", "news", "finance")
 search_list <- list(
-  # Companii Tech
+  # Tech
   "SPY"       = c("S&P", "S&P 500", "S&P500", "SPY"),
   "Google"    = c("Google", "GOOG", "Alphabet"),
   "Microsoft" = c("Microsoft", "MSFT"),
@@ -11,20 +11,20 @@ search_list <- list(
   "JNJ"       = c("Johnson & Johnson", "JNJ"),
   "PG"        = c("Procter & Gamble", "P&G", "PG"),
   
-  # Market Monitor (Starea Pieței)
+  # Market Monitor
   "Macro_Bear" = c("crash", "recession", "bear market", "sell off", "correction", "depression"),
   "Macro_Bull" = c("bull market", "rally", "ath", "all time high", "to the moon"),
   "Economy"    = c("inflation", "FED", "interest rates", "CPI", "Powell", "GDP")
 )
 all_data <- list()
 
-cat("Începe extracția din mai multe subreddituri...\n")
+cat("Start extraction...\n")
 
 for (sub in subreddits) {
-  cat(paste0("\n--- Intrare în r/", sub, " ---\n"))
+  cat(paste0("\n--- Entry in r/", sub, " ---\n"))
   
   for (company in tech_companies) {
-    cat(paste0("  Căutăm ", company, "... "))
+    cat(paste0("  Search ", company, "... "))
     
     threads <- tryCatch({
       find_thread_urls(
@@ -38,7 +38,7 @@ for (sub in subreddits) {
     if (!is.null(threads) && is.data.frame(threads) && nrow(threads) > 0) {
       threads <- head(threads, 500)
       
-      # Păstrăm și numele subredditului ca să știm de unde a venit știrea
+      #Keep the name of the subreddits
       threads <- threads[, c("date_utc", "title", "url")]
       threads$subreddit <- sub
       threads$company <- company
@@ -46,10 +46,10 @@ for (sub in subreddits) {
       all_data <- append(all_data, list(threads))
       cat(paste0(nrow(threads), " găsite.\n"))
     } else {
-      cat("0 găsite.\n")
+      cat("0 found.\n")
     }
     
-    # Pauză scurtă între companii
+    # Short break between companies
     Sys.sleep(1.2) 
   }
 }
@@ -57,14 +57,12 @@ for (sub in subreddits) {
 if (length(all_data) > 0) {
   combined_data <- do.call(rbind, all_data)
   
-  #eliminare postari identice
   combined_data <- combined_data[!duplicated(combined_data$url), ]
   
-  #sortare cronologica
   sorted_data <- combined_data[order(combined_data$date_utc), ]
   
   if (!dir.exists("data")) dir.create("data")
   write.csv(sorted_data, "data/reddit_data.csv", row.names = FALSE)
   
-  cat(paste0("\nFinalizat! Total titluri unice din toate sursele: ", nrow(sorted_data), "\n"))
+  cat(paste0("\nFinish! All unique titles from all the sources: ", nrow(sorted_data), "\n"))
 }
